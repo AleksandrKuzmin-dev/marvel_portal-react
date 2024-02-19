@@ -7,7 +7,7 @@ class CharInfo extends Component {
     renderCharInfo = (selectedChar) => {
         const {name, description, thumbnail, homepage, wiki, comics} = selectedChar;
         const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {"objectFit": "unset"} : {"objectFit": "cover"}
-        
+
         return(
             <>
                 <div className="char__basics">
