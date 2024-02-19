@@ -8,6 +8,7 @@ class CharList extends Component {
     
     state = {
         charList: [],
+        selectedCharId: null,
         loading: true,
         error: false
     }
@@ -29,6 +30,11 @@ class CharList extends Component {
         })
     }
 
+    onChangeSelectedChar = (char) => {
+        this.props.onUpdateSelectedChar(char);
+        this.setState({selectedCharId: char.id})
+    }
+
     componentDidMount() {
         this.marvelService.getAllCharacters()
             .then(charList => this.onCharListLoaded(charList))
@@ -41,9 +47,13 @@ class CharList extends Component {
             if(item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
                 imgStyle = {"objectFit" : "unset"}
             }
+
+            const clazzName = this.state.selectedCharId === item.id ? 'char__item char__item_selected' : 'char__item';
             
             return (
-                <li className="char__item" key={item.id}>
+                <li className={clazzName}
+                    key={item.id}
+                    onClick={() => this.onChangeSelectedChar(item)}>
                     <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                     <div className="char__name">{item.name}</div>
                 </li>
