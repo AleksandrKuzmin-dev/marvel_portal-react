@@ -26,12 +26,12 @@ class App extends Component {
                     </ErrorBoundary>
                     
                     <div className="char__content">
-                    <ErrorBoundary>
-                        <CharList onUpdateSelectedChar={this.onUpdateSelectedChar}/>
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <CharInfo selectedChar={this.state.selectedChar}/>
-                    </ErrorBoundary>
+                        <ErrorBoundary>
+                            <CharList onUpdateSelectedChar={this.onUpdateSelectedChar}/>
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <CharInfo selectedChar={this.state.selectedChar}/>
+                        </ErrorBoundary>
                     </div>
                     <img className="bg-decoration" src={decoration} alt="vision"/>
                 </main>
