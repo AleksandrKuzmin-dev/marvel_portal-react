@@ -1,6 +1,8 @@
-import './charInfo.scss';
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import Skeleton from '../skeleton/Skeleton'
+import './charInfo.scss';
 
 class CharInfo extends Component {
 
@@ -71,6 +73,8 @@ class CharInfo extends Component {
     }
 }
 
-
+CharInfo.propTypes = {
+    selectedChar: PropTypes.object
+}
 
 export default CharInfo;
