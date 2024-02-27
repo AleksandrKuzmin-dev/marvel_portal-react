@@ -8,39 +8,24 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 const RandomChar = () => {
-    const [char, setChar] = useState({}),
-          [loading, setLoading] = useState(true),
-          [error, setError] = useState(false);
+    const [char, setChar] = useState({});
+    const {loading, error, getCharacter} = MarvelService();
+          
 
     useEffect(() => {
         updateChar();
     }, [])
 
-    const marvelService = new MarvelService();
-
     const onCharLoaded = (char) => {
         setChar({...char, description: AbriviationText(char.description, 230)});
-        setLoading(false);
-    }
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
-    }
-
-    const onLoading = () => {
-        setError(false);
-        setLoading(true);
     }
 
     const updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         
-        onLoading();
-        marvelService
-            .getCharacter(id)
+        getCharacter(id)
             .then(onCharLoaded)
-            .catch(onError)
+            .catch(err => console.log(err))
     }
 
     const errorMessage = error ? <ErrorMessage/> : null;

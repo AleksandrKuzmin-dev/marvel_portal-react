@@ -10,13 +10,11 @@ const CharList = (props) => {
     
     const [charList, setCharList] = useState([]),
           [selectedCharId, setSelectedCharId] = useState(null),
-          [loading, setLoading] = useState(true),
-          [error, setError] = useState(false),
           [offset, setOffset] = useState(210),
           [limitEnded, setLimitEnded] = useState(false),
           [newCharLoading, setNewCharLoading] = useState(false);
 
-    const marvelService = new MarvelService();
+    const {loading, error, getAllCharacters} = MarvelService();
 
     const onCharListLoaded = (newCharList) => {
         let limitEnded = false;
@@ -25,24 +23,15 @@ const CharList = (props) => {
         }
 
         setCharList(charList => [...charList, ...newCharList]);
-        setLoading(false);
-        setError(false);
-        setNewCharLoading(false);
         setOffset(offset => offset + 9);
         setLimitEnded(limitEnded);
+        setNewCharLoading(true);
     }
 
     const onShowNewCharacters = () => {
-        setNewCharLoading(true);
-
-        marvelService.getAllCharacters(9, offset)
+        getAllCharacters(9, offset)
             .then(charList => onCharListLoaded(charList))
-            .catch(onError)
-    }
-
-    const onError = () => {
-        setError(true);
-        setLoading(false);
+            .catch(err => console.log(err))
     }
 
     const onChangeSelectedChar = (char, domElementChar) => {
@@ -90,9 +79,9 @@ const CharList = (props) => {
         )
     }
     
-    const spinner = loading ? <Spinner/> : null;
+    const spinner = loading && !newCharLoading ? <Spinner/> : null;
     const errorMessage = error ? <ErrorMessage/> : null;
-    const content = !(loading || error) ? renderCharList(charList) : null;
+    const content = renderCharList(charList)
 
     return (
         <div className="char__list">
@@ -101,9 +90,9 @@ const CharList = (props) => {
             {content}
             <button 
             className="button button__main button__long"
-            onClick={onShowNewCharacters}
+            onClick={e => onShowNewCharacters()}
             style={{'display': limitEnded ? 'none' : 'block'}}
-            disabled={newCharLoading}>
+            disabled={loading}>
                 <div className="inner">load more</div>
             </button>
         </div>

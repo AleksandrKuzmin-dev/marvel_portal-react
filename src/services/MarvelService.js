@@ -1,30 +1,24 @@
-class MarvelService {
-    _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-    _apiKey = 'apikey=95c456a7ea2c5345495bb580c088c93e';
-    _limitCharacters = 9;
-    _offsetCharacters = 210;
+import { useHttp } from "../hooks/http.hook";
 
-    getResource = async (url) => {
-        let res = await fetch(url);
+const MarvelService = () => {
+    const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+    const _apiKey = 'apikey=95c456a7ea2c5345495bb580c088c93e';
+    const _limitCharacters = 9;
+    const _offsetCharacters = 210;
 
-        if (!res.ok) {
-            throw new Error(`Не удалось получить ${url}, статус: ${res.status}`);
-        }
+    const {loading, error, request} = useHttp();
 
-        return await res.json();
+    const getAllCharacters = async (limit = _limitCharacters, offset = _offsetCharacters) => {
+        const res = await request(`${_apiBase}characters?limit=${limit}&offset=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter);
     }
 
-    getAllCharacters = async (limit = this._limitCharacters, offset = this._offsetCharacters) => {
-        const res = await this.getResource(`${this._apiBase}characters?limit=${limit}&offset=${offset}&${this._apiKey}`);
-        return res.data.results.map(this._transformCharacter);
+    const getCharacter = async (id) => {
+        const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+        return _transformCharacter(res.data.results[0]);
     }
 
-    getCharacter = async (id) => {
-        const res = await this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        return this._transformCharacter(res.data.results[0]);
-    }
-
-    _transformCharacter = (char) => {
+    const _transformCharacter = (char) => {
         return {
             id: char.id,
             name: char.name,
@@ -34,6 +28,13 @@ class MarvelService {
             wiki: char.urls[1].url,
             comics: char.comics.items
         }
+    }
+
+    return {
+        loading,
+        error,
+        getAllCharacters,
+        getCharacter
     }
 }
 
