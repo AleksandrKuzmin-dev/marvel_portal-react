@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Skeleton from '../skeleton/Skeleton'
 import './charInfo.scss';
@@ -7,7 +8,7 @@ const CharInfo = (props) => {
 
     const renderCharInfo = (selectedChar) => {
         const {name, description, thumbnail, homepage, wiki, comics} = selectedChar;
-        const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {"objectFit": "unset"} : {"objectFit": "cover"}
+        const imgStyle = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {"objectFit": "unset"} : {"objectFit": "cover"};
 
         return(
             <>
@@ -47,13 +48,11 @@ const CharInfo = (props) => {
                         comics.map((item, index) => {
                             if (index > 8) return null;
     
+                            const comicId = item.resourceURI.replace('http://gateway.marvel.com/v1/public/comics/', '');
                             return (
-                                <li 
-                                className="char__comics-item"
-                                key={index}
-                                >
-                                    {item.name}
-                                </li>
+                                <Link className="char__comics-item" to={`/comics/${comicId}`} key={index}>
+                                    {item.name}             
+                                </Link>
                             )
                         })
                     }

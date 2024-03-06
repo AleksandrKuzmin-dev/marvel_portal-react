@@ -1,8 +1,11 @@
 import ComicsList from '../comicsList/ComicsList';
+import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 const ComicsPage = () => {
     return (
-        <ComicsList/>
+        <ErrorBoundary>
+            <ComicsList/>
+        </ErrorBoundary>
     )
 }
 
