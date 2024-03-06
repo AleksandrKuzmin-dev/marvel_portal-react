@@ -11,17 +11,16 @@ const App = () => {
     return (
         <Router>
             <div className="app">
-                <AppHeader/>
-                <main>
                     <Routes>
-                        <Route path='/' element={<MainPage/>} />
-                        <Route path='/comics'>
-                            <Route index element={<ComicsPage/>}/>
-                            <Route path=':comicId' element={<SingleComicPage/>} />
+                        <Route path='/' element={<AppHeader/>}>
+                            <Route index element={<MainPage/>} />
+                            <Route path='/comics'>
+                                <Route index element={<ComicsPage/>}/>
+                                <Route path=':comicId' element={<SingleComicPage/>} />
+                            </Route>
+                            <Route path='*' element={<Page404/>} />
                         </Route>
-                        <Route path='*' element={<Page404/>} />
                     </Routes>
-                </main>
             </div>
         </Router>
     )
