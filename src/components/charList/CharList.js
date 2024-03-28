@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import MarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
@@ -56,27 +58,33 @@ const CharList = (props) => {
             }
 
             return (
-                <li className={clazzName}
+                <CSSTransition 
+                    timeout={300}
                     key={item.id}
-                    onClick={(e) => {
-                        onChangeSelectedChar(item, e.target)
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
+                    classNames="char__item">
+                    <li className={clazzName}
+                        onClick={(e) => {
                             onChangeSelectedChar(item, e.target)
-                        }
-                    }}
-                    tabIndex={0}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                onChangeSelectedChar(item, e.target)
+                            }
+                        }}
+                        tabIndex={0}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition>
             )
         })
         
         return (
             <ul className="char__grid">
-                {charList}
+                <TransitionGroup component={null}>
+                    {charList}
+                </TransitionGroup>
             </ul>
         )
     }

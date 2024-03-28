@@ -14,20 +14,20 @@ const App = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-        <Router>
-            <div className="app">
-                    <Routes>
-                        <Route path='/' element={<AppHeader/>}>
-                            <Route index element={<MainPage />} />
-                            <Route path='/comics'>
-                                <Route index element={<ComicsPage />} />
-                                <Route path=':comicId' element={<SingleComicPage />} />
+            <Router>
+                <div className="app">
+                        <Routes>
+                            <Route path='/' element={<AppHeader/>}>
+                                <Route index element={<MainPage />} />
+                                <Route path='/comics'>
+                                    <Route index element={<ComicsPage />} />
+                                    <Route path=':comicId' element={<SingleComicPage />} />
+                                </Route>
+                                <Route path='*' element={<Page404 />} />
                             </Route>
-                            <Route path='*' element={<Page404 />} />
-                        </Route>
-                    </Routes>
-            </div>
-        </Router>
+                        </Routes>
+                </div>
+            </Router>
         </Suspense>
     )
 }
