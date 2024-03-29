@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import MarvelService from '../../services/MarvelService';
-import './char.scss';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
+import './singleCharacter.scss';
 
-const Char = () => {
+
+const SingleCharacter = () => {
 
     const [char, setChar] = useState(null);
 
@@ -58,4 +59,4 @@ const View = ({char}) => {
 }
 
 
-export default Char;
+export default SingleCharacter;

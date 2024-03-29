@@ -1,8 +1,10 @@
 import './searchChar.scss';
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import MarvelService from '../../services/MarvelService';
+import { Formik, Form, Field, ErrorMessage as ErrorMessageFormik } from 'formik';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import MarvelService from '../../services/MarvelService';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 const validate = (values) => {
     const errors = {};
@@ -14,7 +16,7 @@ const validate = (values) => {
 
 const SearchChar = () => {
     const [foundChar, setFoundChar] = useState(null);
-    const { getCharacterByName, loading } = MarvelService();
+    const { getCharacterByName, loading, error } = MarvelService();
 
     const searchChar = (name) => {
         getCharacterByName(name)
@@ -23,8 +25,6 @@ const SearchChar = () => {
             })
             .catch(err => console.log(err))
     }
-
-    console.log(loading);
 
     return(
         <div className="searchChar">
@@ -45,13 +45,14 @@ const SearchChar = () => {
                     </div>
                     
                     <div className='searchChar__message-block'>
-                        <ErrorMessage name="charName" component="div" className="searchChar__message searchChar__message_error"/>
+                        <ErrorMessageFormik name="charName" component="div" className="searchChar__message searchChar__message_error"/>
                     </div>
                     
                 </Form>
                 
             </Formik>
-            {foundChar != null ? <VisitPage foundChar={foundChar}/> : null}
+            {foundChar != null && !error ? <VisitPage foundChar={foundChar}/> : null}
+            {error ? <ErrorMessage /> : null}
                 
         </div>
     )
@@ -64,7 +65,7 @@ const VisitPage = ({ foundChar }) => {
             {foundChar ?
             <>
                 <p className="searchChar__message">There is! Visit {foundChar.name} page?</p>
-                <a href={`/char/${foundChar.id}`} className="searchChar__message-btn button button__secondary"><div className="inner">TO PAGE</div></a>
+                <Link to={`/char/${foundChar.id}`} className="searchChar__message-btn button button__secondary"><div className="inner">TO PAGE</div></Link>
             </> 
             :
             <p className="searchChar__message searchChar__message_error">The character was not found. Check the name and try again</p>}

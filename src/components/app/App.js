@@ -4,7 +4,7 @@ import { Suspense, lazy} from "react";
 import AppHeader from "../appHeader/AppHeader";
 import MainPage from "../pages/MainPage";
 import ComicsPage from "../pages/ComicsPage";
-import Char from "../char/Char.js";
+import SingleCharacterPage from "../pages/SingleCharacterPage.js";
 import Spinner from "../spinner/Spinner.js";
 
 const Page404 = lazy(() => import('../pages/Page404.js'));
@@ -26,7 +26,7 @@ const App = () => {
                                 </Route>
                                 <Route path='/char'>
                                     <Route index element={<MainPage />} />
-                                    <Route path=':charId' element={<Char />} />
+                                    <Route path=':charId' element={<SingleCharacterPage />} />
                                 </Route>
                                 <Route path='*' element={<Page404 />} />
                             </Route>
